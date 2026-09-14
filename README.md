@@ -3,10 +3,11 @@
 The scripts in this repository perform the numerical calculations shown in Figs. XX of the manuscript [_Controlling energy delivery with bistable nanostructures_](https://doi.org/10.48550/arXiv.2506.14266).
 
 ## Instructions
-To run the scripts, simply start Python and first run the code XX.
-This will X.
+To run the scripts, simply start Python and run the code `individual_simulation_state.py' and `coupled_simulation_state.py'.
+This will import all relevant packages and run long Brownian dynamics simulations of the Machine system on its own as well as the coupled system of Machine and Source and save relevant data.
+The data contains information about the Machine actions.
 
-After that, running the scripts Y will Z.
+After that, running the analysis script.
 
 
 ## Citation
