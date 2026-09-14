@@ -1,6 +1,6 @@
 # Code for _Controlling energy delivery with bistable nanostructures_
 
-The scripts in this repository perform the numerical calculations shown in Figs. XX of the manuscript [_Controlling energy delivery with bistable nanostructures_]([https://www.nature.com/articles/s41567-025-03120-3](https://doi.org/10.48550/arXiv.2506.14266)).
+The scripts in this repository perform the numerical calculations shown in Figs. XX of the manuscript [_Controlling energy delivery with bistable nanostructures_](https://doi.org/10.48550/arXiv.2506.14266).
 
 ## Instructions
 To run the scripts, simply start Python and first run the code XX.
