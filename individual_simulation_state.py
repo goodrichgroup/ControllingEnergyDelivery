@@ -125,9 +125,9 @@ def apply_N_steps(data, t):
 time_ini = 0                                         # running variable for current simulation time
 n_trans_ini = 0                                      # running variable for current number of Machine transition
 s_ini = 0                                            # running variable for Machine state: 0/1
-Ntrans = 1000                                        # default number of Machine transitions to save, N_machine_cycles = Ntrans - 2
+Ntrans = 10000                                       # default number of Machine transitions to save, N_machine_cycles = Ntrans - 2
 times_trans_ini = -1 * jnp.ones(Ntrans, dtype=int)   # running variable for time points of Machine transitions
-trajectory_ini = jnp.zeros(int(global_options['num_total_steps'] / global_options['save_every']))
+trajectory_ini = jnp.zeros(Ntrans)  # int(global_options['num_total_steps'] / global_options['save_every'])
 # even = transition closed -> open, odd = transition open -> closed
 # If there are more than Ntrans transitions they will not be added to times_trans.
 # if there are less, we remove the empty lines from the array before saving data
@@ -149,7 +149,7 @@ outdata = xr.Dataset({
     's_final': xr.DataArray(s_fin),
     'n_trans': xr.DataArray(n_trans_fin),
     'times_trans': xr.DataArray(times_trans_fin[:n_trans_fin], dims=('num_trans',)),
-    'trajectory': xr.DataArray(trajectory_fin, dims=('num_traj',)),
+    # 'trajectory': xr.DataArray(trajectory_fin, dims=('num_traj',)),
 })
 # Compress data
 comp = {'zlib': True, 'complevel': 5}

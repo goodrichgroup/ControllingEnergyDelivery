@@ -32,6 +32,7 @@ if not os.path.exists(data_dir):
 file = os.path.join(data_dir, 'params.pickle')
 with open(file, 'rb') as f:
     params = pickle.load(f)
+## vary epsilon and save corresponding data
 # params_upd = {'epsilon_pp': 15.}
 # params = {**params, **params_upd}
 
@@ -51,7 +52,7 @@ global_options = {
     'species_numbers': [1, 1],          # amount of [Sources, Machines] in system
 }
 if job_idx == 1:
-    file = os.path.join(data_dir, 'global_options.pickle')  # _{:02d} .format(job_idx)
+    file = os.path.join(data_dir, 'global_options.pickle')
     with open(file, 'wb') as f:
         pickle.dump(global_options, f)
     file = os.path.join(data_dir, 'params.pickle')
@@ -100,7 +101,7 @@ def is_usable(m, state):
     # Define usable Machine state by (i) open configuration with (ii) 0/1 bonds with Source
     is_free_0bond = jnp.logical_and(sep_r1 > int_thresh, sep_r2 > int_thresh)
     is_free_1bond = jnp.logical_or(sep_r1 > int_thresh, sep_r2 > int_thresh)
-    is_B = m > m_thresh  # thresholds[2]
+    is_B = m > m_thresh
     is_use0 = jnp.where(jnp.logical_and(is_B, is_free_0bond), True, False)
     is_use1 = jnp.where(jnp.logical_and(is_B, is_free_1bond), True, False)
     return is_use0, is_use1
@@ -144,7 +145,7 @@ def apply_recharge_step(data, t):
     (state_curr, s_curr, times_trans, n_trans, N_re, t_use0, t_use1, time_md, trajectory) = data
 
     # 3. Recharge Source
-    R_re, is_re = recharge_fuel_source(state_curr.position, fm_bonds, params, displacement, shift)
+    R_re, is_re = recharge_source(state_curr.position, fm_bonds, params, displacement, shift)
     N_re_upd = jnp.where(is_re, N_re.at[n_trans].add(1), N_re)
     state_upd_re = BrownianState(R_re, state_curr.mass, state_curr.rng)
 
@@ -164,9 +165,9 @@ def apply_N_steps(data, t):
 time_md = 0                                      # running variable for current simulation time
 n_trans = 0                                      # running variable for current number of Machine transition
 s = 0                                            # running variable for Machine state: 0/1
-Ntrans = 1000                                    # default number of Machine transitions to save
+Ntrans = 10000                                   # default number of Machine transitions to save
 times_trans = -1 * jnp.ones(Ntrans, dtype=int)   # running variable for time points of Machine transitions
-trajectory = jnp.zeros((int(global_options['num_total_steps'] / global_options['save_every']), 4))
+trajectory = jnp.zeros((Ntrans, 4))  # int(global_options['num_total_steps'] / global_options['save_every'])
 # even = transition closed -> open, odd = transition open -> closed
 # If there are more than Ntrans transitions they will not be added to times_trans.
 # if there are less, we remove the empty lines from the array before saving data
@@ -192,7 +193,7 @@ outdata = xr.Dataset({
     's_final': xr.DataArray(s_final),
     'n_trans': xr.DataArray(n_trans),
     'times_trans': xr.DataArray(times_trans[:n_trans], dims=('num_trans',)),
-    'trajectory': xr.DataArray(trajectory, dims=('num_traj','lengths')),
+    # 'trajectory': xr.DataArray(trajectory, dims=('num_traj','lengths')),
     'N_re': xr.DataArray(N_re[:n_trans], dims=('num_trans',)),
     't_use0': xr.DataArray(t_use0[:n_trans], dims=('num_trans',)),
     't_use1': xr.DataArray(t_use1[:n_trans], dims=('num_trans',)),
