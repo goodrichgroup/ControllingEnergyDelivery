@@ -57,46 +57,40 @@ def get_R_initial(params, global_options, shift):
     return R_initial
 
 
-def initialize_system(global_options, params, shift, key, caps=False):
-    """ Initialize the system of Sources, Machine, and caps. Place FSs and M in their closed length in a random
-    orientation. Each Source is capped, the remaining caps are randomly placed.
+def initialize_system(global_options, params, shift, key):
+    """ Initialize the system of Sources and Machine. Place Sources and Machine in their closed length in a random orientation. 
     1. Start with a random (N,3) vector
     2. Adjust every 2nd entry of FSs and M to match dumbbell length in random orientation
-    3. Locations of first 2*Nfs caps are identical to locations of FSs.
     Args:
         - global_options.
         - params.
         - shift.
         - key.
-        - caps: If True, the first 2*Nfs caps are placed at exact locations of FSs.
     Return:
-        - Array of initial locations of all 3 species.
+        - Array of initial locations of all 2 species.
      """
 
     dimension = global_options['dimension']
     key, subkey = random.split(key)
-    Nfs, Nm, Nc = global_options['species_numbers']
-    N = 2 * (Nfs + Nm + Nc)
+    N_src, N_mac = global_options['species_numbers']
+    N = 2 * (N_src + N_mac)
 
     ## R_initial
     R_init = random.uniform(subkey, (N, dimension), dtype=jnp.float64, maxval=global_options['side_length'])
     # Locations FS
-    for n in jnp.arange(0, 2 * Nfs, 2):
+    for n in jnp.arange(0, 2 * N_src, 2):
         p1, p2 = n, n + 1
         key, subkey = random.split(key)
         v = random.normal(subkey, (dimension,), dtype=jnp.float64)
         v_hat = v * params['src_sigma0'] / jnp.linalg.norm(v)
         R_init = R_init.at[p2].set(shift(R_init[p1], v_hat))
     # Locations M
-    for n in jnp.arange(2 * Nfs, 2 * Nfs + 2 * Nm, 2):
+    for n in jnp.arange(2 * N_src, 2 * N_src + 2 * N_mac, 2):
         p1, p2 = n, n + 1
         key, subkey = random.split(key)
         v = random.normal(subkey, (dimension,), dtype=jnp.float64)
         v_hat = v * params['mac_sigma0'] / jnp.linalg.norm(v)
         R_init = R_init.at[p2].set(shift(R_init[p1], v_hat))
-    # Locations of first 2*Nfs caps
-    if caps == True:
-        R_init = R_init.at[2 * Nfs + 2 * Nm:4 * Nfs + 2 * Nm].set(R_init[0:2 * Nfs])
     return R_init
 
 
@@ -162,7 +156,7 @@ def setup_energy_individual(displacement, mac=True):
 
 
 def setup_energy(params, global_options, displacement):
-    """ Set up full energy function of a general system with Nfs Sources and 1 Machine.
+    """ Set up full energy function of a general system with N_src Sources and 1 Machine.
     We avoid crosstalk, so each dimer has a “left” and a “right” monomer/patch, and a left FS patch can only bind to a
     left M patch, and so on. The interaction energy is given by the pair potentials of L/R particles, the dimer energies
     are given by double Morse potentials. Current assumption: Nleft = Nright.
@@ -173,13 +167,12 @@ def setup_energy(params, global_options, displacement):
         Returns:
             Full energy function.
         """
-    Nfs, Nm, Nc = global_options['species_numbers']
-    assert Nm == 1  # This is hard-core baked in...
-    assert Nc == 0
+    N_src, N_mac = global_options['species_numbers']
+    assert N_mac == 1  # This is hard-core baked in...
 
     metric = space.canonicalize_displacement_or_metric(displacement)
 
-    fm_bonds = jnp.array([jnp.arange(2 * Nfs), jnp.array([-2, -1] * Nfs) + 2 * (Nfs + 1)]).T
+    fm_bonds = jnp.array([jnp.arange(2 * N_src), jnp.array([-2, -1] * N_src) + 2 * (N_src + 1)]).T
     energy_patch_fn = smap.bond(energy.morse,
                                 metric,
                                 fm_bonds,
@@ -189,7 +182,7 @@ def setup_energy(params, global_options, displacement):
                                 )
 
     V_m, V_s = get_energy_double_morse(params)  # Functions with all parameters baked in
-    fs_bonds = jnp.arange(2 * Nfs).reshape((Nfs, 2))
+    fs_bonds = jnp.arange(2 * N_src).reshape((N_src, 2))
     energy_fs_fn = smap.bond(V_s, metric, fs_bonds)
 
     m_bonds = jnp.array([[-2, -1]])
@@ -199,7 +192,7 @@ def setup_energy(params, global_options, displacement):
     def energy_fn(R, **kwargs):
         """ Calculate full energy of the system.
         Args:
-            - R:   Locations of all particles with shape (2*Nfs+2,dimension).
+            - R:   Locations of all particles with shape (2*N_src+2,dimension).
         """
 
         energy_patch = energy_patch_fn(R)
@@ -212,7 +205,7 @@ def setup_energy(params, global_options, displacement):
 
 
 def setup_energy_dynamic(params, global_options, displacement):
-    """ Set up full energy function of a general system with Nfs Sources and 1 Machine. Include bounded times for
+    """ Set up full energy function of a general system with N_src Sources and 1 Machine. Include bounded times for
     each pair of FS-M monomers as dynamic variable.
     We avoid crosstalk, so each dimer has a “left” and a “right” monomer/patch, and a left FS patch can only bind to a
     left M patch, and so on. The interaction energy is given by the pair potentials of L/R particles, the dimer energies
@@ -224,13 +217,12 @@ def setup_energy_dynamic(params, global_options, displacement):
         Returns:
             Full energy function.
         """
-    Nfs, Nm, Nc = global_options['species_numbers']
-    assert Nm == 1  # This is hard-core baked in...
-    assert Nc == 0
+    N_src, N_mac = global_options['species_numbers']
+    assert N_mac == 1  # This is hard-core baked in...
 
     metric = space.canonicalize_displacement_or_metric(displacement)
 
-    fm_bonds = jnp.array([jnp.arange(2 * Nfs), jnp.array([-2, -1] * Nfs) + 2 * (Nfs + 1)]).T
+    fm_bonds = jnp.array([jnp.arange(2 * N_src), jnp.array([-2, -1] * N_src) + 2 * (N_src + 1)]).T
     energy_patch_fn = smap.bond(energy.morse,
                                 metric,
                                 fm_bonds,
@@ -243,7 +235,7 @@ def setup_energy_dynamic(params, global_options, displacement):
         return params['epsilon_pp'] * jnp.exp(- pp_times / global_options['pp_decay_time'])
 
     V_m, V_s = get_energy_double_morse(params)  # Functions with all parameters baked in
-    fs_bonds = jnp.arange(2 * Nfs).reshape((Nfs, 2))
+    fs_bonds = jnp.arange(2 * N_src).reshape((N_src, 2))
     energy_fs_fn = smap.bond(V_s, metric, fs_bonds)
 
     m_bonds = jnp.array([[-2, -1]])
@@ -253,8 +245,8 @@ def setup_energy_dynamic(params, global_options, displacement):
     def energy_fn(R, pp_times):
         """ Calculate full energy of the system.
         Args:
-            - R:        Locations of all particles with shape (2*Nfs+2,dimension).
-            - pp_times: dynamic variable of binding times for each pair of FS-M monomers, array with shape (2*Nfs,).
+            - R:        Locations of all particles with shape (2*N_src+2,dimension).
+            - pp_times: dynamic variable of binding times for each pair of FS-M monomers, array with shape (2*N_src,).
         """
         epsilon = set_epsilon(pp_times)
 

@@ -67,7 +67,7 @@ seeds = random.bits(subkey, shape=int(global_options['num_total_steps'] / global
 ### Initialization
 displacement, shift = space.periodic(global_options['side_length'])
 metric = space.map_product(space.canonicalize_displacement_or_metric(displacement))
-Nfs, Nm = global_options['species_numbers']
+N_src, N_mac = global_options['species_numbers']
 m_thresh = 2.0  # (hard-coded) depends on parameters #
 int_thresh = 2 / params['alpha_pp']
 
@@ -76,7 +76,7 @@ energy_fn, fm_bonds = setup_energy(params, global_options, displacement)
 
 ## Get initial locations of Sources, Machine, and caps
 key, split = random.split(key)
-R_init = initialize_system(global_options, params, shift, split, caps=False)
+R_init = initialize_system(global_options, params, shift, split)
 
 
 ### Run a brownian dynamics simulation and save quantities of interest

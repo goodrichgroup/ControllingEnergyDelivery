@@ -67,8 +67,8 @@ get_energy_fn = setup_energy_individual(displacement, mac=True)
 energy_fn = get_energy_fn(params)
 
 ## Get initial locations of Sources, Machine
-Nfs, Nm = global_options['species_numbers']
-N = 2 * (Nfs + Nm)
+N_src, N_mac = global_options['species_numbers']
+N = 2 * (N_src + N_mac)
 key, subkey = random.split(key)
 
 ## Prepare one Machine/Source in closed state

@@ -31,7 +31,7 @@ def get_dimer_lengths(R, displacement):
             - R: Array with all locations of shape (N,3)
             - displacement.
         Return:
-            Arrays of Source lengths (Nfs,) and M length (1,).
+            Arrays of Source lengths (N_src,) and M length (1,).
         """
     lengths = space.distance(vmap(displacement)(R[::2], R[1::2]))
     return lengths[:-1], lengths[-1]
@@ -150,10 +150,10 @@ def get_state(R, thresholds, displacement):
 
 
 def determine_dissociation(R, thresholds, global_options, displacement):
-    Nfs, Nm, Nc = global_options['species_numbers']
+    N_src, N_mac = global_options['species_numbers']
     metric = space.map_product(space.canonicalize_displacement_or_metric(displacement))
     dists = metric(R, R)
-    drs_fs_m = dists[:2 * Nfs, 2 * Nfs:2 * Nfs + 2 * Nm]          # distances of all Sources to M
+    drs_fs_m = dists[:2 * N_src, 2 * N_src:2 * N_src + 2 * N_mac]          # distances of all Sources to M
     drs_min = jnp.min(drs_fs_m)                                   # minimum distance of all Machine-Source pairs
     dissociation = jnp.where(drs_min > thresholds[0], 1, 0)
     return dissociation
@@ -169,10 +169,10 @@ def determine_association(dists, thresholds, global_options):
     Returns: Number of associated bonds 0, 1, or 2.
     """
 
-    Nfs, Nm, Nc = global_options['species_numbers']
+    N_src, N_mac = global_options['species_numbers']
     # metric = space.map_product(space.canonicalize_displacement_or_metric(displacement))
     # dists = metric(R, R)
-    drs_fs_m = dists[:2 * Nfs, 2 * Nfs:2 * Nfs + 2 * Nm]          # distances of all Sources to Machine
+    drs_fs_m = dists[:2 * N_src, 2 * N_src:2 * N_src + 2 * N_mac]          # distances of all Sources to Machine
     drs_min = jnp.min(drs_fs_m, axis=1)                           # 2 smallest distances of all Machine-Source pairs
     association = jnp.where(drs_min[0] < thresholds[0], 1, 0)
     association += jnp.where(drs_min[1] < thresholds[1], 1, 0)
