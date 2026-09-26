@@ -15,7 +15,7 @@
 #
 #Define the number of hours the job should run.
 #Maximum runtime is limited to 10 days, ie. 240 hours
-#SBATCH --time=120:00:00
+#SBATCH --time=48:00:00
 #
 #Define the amount of RAM used by your job in GigaBytes
 #SBATCH --mem=2G  # total memory
@@ -26,7 +26,9 @@
 export OMP_NUM_THREADS=1
 #
 #activate Python environment with JAX and JAX MD installed with all relevant packages
+### TODO ###
 source /link/to/cluster/env_jax_cpu/bin/activate
 #
 #run the respective binary through SLURM's srun
+### TODO ###
 srun --cpu_bind=verbose /usr/bin/time -v python3 /link/to/scripts/coupled_simulation_state.py ${SLURM_ARRAY_TASK_ID}

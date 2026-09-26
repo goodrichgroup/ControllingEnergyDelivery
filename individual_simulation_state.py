@@ -25,7 +25,7 @@ job_idx = jnp.int64(sys.argv[1])          # from job_array
 seed = 321 * job_idx + 7654               # used to generate PRNGKey
 key = random.key(seed)  # PRNGKey
 
-data_dir = (r'/link/to/directory/')
+data_dir = (r'/link/to/directory/')       ### TODO ###
 if not os.path.exists(data_dir):
     os.makedirs(data_dir, exist_ok=True)
 file = os.path.join(data_dir, 'params.pickle')
