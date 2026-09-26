@@ -10,8 +10,8 @@ For varying binding energies, change the corresponding parameter in the main pyt
 After that, running the ``Analysis.ipynb`` notebook will help analyzing the data, extracting relevant measures of merit, and producing corresponding figures.
 
 Notes: 
-1. 
-2. This work is based on the Python libraries [_JAX_](https://github.com/jax-ml/jax) and [_JAX MD_](https://github.com/jax-md/jax-md).
+  1. 
+  2. This work is based on the Python libraries [_JAX_](https://github.com/jax-ml/jax) and [_JAX MD_](https://github.com/jax-md/jax-md).
 
 ## Citation
 
