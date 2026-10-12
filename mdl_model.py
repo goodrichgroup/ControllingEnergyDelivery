@@ -2,7 +2,6 @@ import jax.numpy as jnp
 from jax import jit, random, vmap, value_and_grad, debug
 from jax_md import space, energy, smap, util
 from jaxopt import LBFGS, ScipyMinimize, GradientDescent
-from functools import partial
 
 
 ###### Basic functions ######
