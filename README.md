@@ -13,7 +13,7 @@ Comments
 1. All parts of the code scripts and the analysis notebook that require user input are marked with TODOs.
 2. This work is based on the Python libraries [_JAX_](https://github.com/jax-ml/jax) and [_JAX MD_](https://github.com/jax-md/jax-md).
 
-List of required Python libraries and packages that need to be installed in a pip environment
+List of required Python libraries and packages that need to be installed in a pip environment:
 - jax, jax_md, jaxopt
 - scipy, matplotlib, os, sys, pickle, xarray, typing
 - common_utils ([https://git.ista.ac.at/goodrichgroup/common_utils](https://git.ista.ac.at/goodrichgroup/common_utils))
