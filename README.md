@@ -10,7 +10,7 @@ For varying binding energies, change the corresponding parameter in the main pyt
 After that, running the ``Analysis.ipynb`` notebook will help analyzing the data, extracting relevant measures of merit, and producing corresponding figures.
 
 Comments 
-1. All parts of the code and analysis scripts that require user input are marked with TODOs.
+1. All parts of the code scripts and the analysis notebook that require user input are marked with TODOs.
 2. This work is based on the Python libraries [_JAX_](https://github.com/jax-ml/jax) and [_JAX MD_](https://github.com/jax-md/jax-md).
 
 List of required Python libraries and packages that need to be installed in a pip environment
