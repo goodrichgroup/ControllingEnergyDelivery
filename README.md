@@ -16,7 +16,7 @@ Comments
 List of required Python libraries and packages that need to be installed in a pip environment
 - jax, jax_md, jaxopt
 - scipy, matplotlib, os, sys, pickle, xarray, typing
-- common_utils (!pip install -q git+https://git.ist.ac.at/goodrichgroup/common_utils.git)
+- common_utils ([https://git.ista.ac.at/goodrichgroup/common_utils](https://git.ista.ac.at/goodrichgroup/common_utils))
 
 ## Citation
 
