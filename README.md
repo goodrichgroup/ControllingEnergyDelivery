@@ -13,6 +13,10 @@ Comments
 1. All parts of the code that require user input are marked with TODOs.
 2. This work is based on the Python libraries [_JAX_](https://github.com/jax-ml/jax) and [_JAX MD_](https://github.com/jax-md/jax-md).
 
+List of required Python libraries and packages
+- jax, jax_md, jaxopt
+- os, sys, pickle, xarray, typing
+
 ## Citation
 
 ```
