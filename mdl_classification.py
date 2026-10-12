@@ -1,7 +1,6 @@
 import jax.numpy as jnp
 from jax import vmap, value_and_grad, debug
 from jax_md import space, energy
-# from jax_transformations3d import jax_transformations3d as jts
 from scipy.signal import butter, filtfilt
 
 ### import my own modules
