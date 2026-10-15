@@ -4,10 +4,10 @@ The scripts in this repository perform the numerical calculations shown in Figur
 
 ## Instructions
 To run the scripts, simply run the ``slurm_array.sh`` script on your cluster using a Python environment to run an ensemble of long Brownian Dynamics simulations. This will import all relevant packages and run long Brownian Dynamics simulations for an ensemble of Machine-only systems using the code ``individual_simulation_state.py`` or simulations of an ensemble of coupled systems of Machine & Source at a fixed binding energy $\epsilon$ using the code ``coupled_simulation_state.py`` and save relevant data.
-The data contains information about the Machine actions and the measures of merit of the energy-delivery mechanism.
-For varying binding energies, change the corresponding parameter in the main python script ``coupled_simulation_state.py`` and save data in separate folders for analysis.
+The data contains information about the Machine actions and the measures of merit of the energy-delivery mechanism: performance, power, and efficiency as well as the number of Machine actions and the number of Source recharging events.
+For varying binding energies $\epsilon$, change the corresponding parameter in the main python script ``coupled_simulation_state.py`` and save the data in separate folders for the analysis.
 
-After that, running the ``Analysis.ipynb`` notebook will help analyzing the data, extracting relevant measures of merit, and producing corresponding figures.
+After that, running the ``Analysis.ipynb`` notebook will help analyzing the data, extracting the relevant measures of merit, and producing the corresponding figures.
 
 Comments 
 1. All parts of the code scripts and the analysis notebook that require user input are marked with TODOs.
