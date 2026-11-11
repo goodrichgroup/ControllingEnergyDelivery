@@ -4,7 +4,7 @@ The source code in this repository allows to perform the numerical calculations 
 
 <img width="600" height="495" alt="key_image" src="https://github.com/user-attachments/assets/b01075a7-a2b3-4308-a92b-2059ce1b27e5" />
 
-``A two-state source nanostructure (blue) uses an energy-delivery mechanism akin to ATP hydrolysis to power a nanomachine (black) through a two-stage coupled relaxation process. © Andreas Ehrmann''
+A two-state source nanostructure (blue) uses an energy-delivery mechanism akin to ATP hydrolysis to power a nanomachine (black) through a two-stage coupled relaxation process. © Andreas Ehrmann
 
 
 ## Getting Started
