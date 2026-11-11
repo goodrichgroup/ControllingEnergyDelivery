@@ -2,7 +2,9 @@
 
 The source code in this repository allows to perform the numerical calculations and generate the essential data presented in Figures 4, 6, and 7 of the manuscript [_Controlling energy delivery with bistable nanostructures_](https://doi.org/10.1103/llzj-hmxz).
 
+<p align="center">
 <img width="600" height="495" align="middle" alt="key_image" src="https://github.com/user-attachments/assets/b01075a7-a2b3-4308-a92b-2059ce1b27e5" />
+</p>
 
 A two-state source nanostructure (blue) uses an energy-delivery mechanism akin to ATP hydrolysis to power a nanomachine (black) through a two-stage coupled relaxation process. © Andreas Ehrmann
 
