@@ -29,15 +29,20 @@ List of required Python libraries and packages that need to be installed in a pi
 
 The source code accompanies the following publication:
 
-Andreas Ehrmann and Carl P. Goodrich, _Controlling energy delivery with bistable nanostructures_, [Physical Review X **16** (2026)](https://doi.org/10.1103/llzj-hmxz).
+Andreas Ehrmann and Carl P. Goodrich, _Controlling energy delivery with bistable nanostructures_, [Physical Review X **16**, 041051 (2026)](https://doi.org/10.1103/llzj-hmxz).
 
 ```
 @article{ehrmann26,
-  title = {Controlling energy delivery with bistable nanostructures},
+  title = {Controlling Energy Delivery with Bistable Nanostructures},
   author = {Ehrmann, Andreas and Goodrich, Carl P.},
-  year = {2026},
-  volume = {16},
   journal = {Physical Review X},
-  doi = {10.1103/llzj-hmxz),
+  volume = {16},
+  issue = {4},
+  pages = {041051},
+  numpages = {14},
+  year = {2026},
+  month = {Nov},
+  publisher = {American Physical Society},
+  doi = {10.1103/llzj-hmxz},
 }
 ```
